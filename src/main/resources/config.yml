@@ -1,0 +1,4 @@
+TaxPercent: 0.92
+# Set the percentage you want to remove from the original bounty as a tax.
+# If you want to take 8%, this should be set to 0.92.
+# For no tax, set this to 100

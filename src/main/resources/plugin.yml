@@ -1,0 +1,23 @@
+name: MidensBounties
+main: net.cozycosmos.midensbounties.Main
+author: Miden
+version: 1.0.1
+depend: [Vault]
+
+commands:
+  bounty:
+    description: Check your own bounty
+    permission: midensbounties.bounty
+    usage: Use /bounty to check your own bounty
+  setbounty:
+    description: Put a bounty on someone else's head
+    permission: midensbounties.setbounty
+    usage: use /setbounty [name] [amount] to put a bounty on someone's head
+
+permissions:
+  midensbounties.bounty:
+    description: Gives access to the /bounty command
+    default: true
+  midensbounties.setbounty:
+    description: Gives access to the /setbounty command
+    default: true
