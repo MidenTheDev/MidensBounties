@@ -1,8 +1,6 @@
 package net.cozycosmos.midensbounties.commands;
 
 import net.cozycosmos.midensbounties.Main;
-import net.cozycosmos.midensbounties.events.PlayerKilled;
-import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -38,6 +36,7 @@ public class SetBounty implements CommandExecutor {
                                 try {
                                     double bountystart = bountiesdata.getInt("bounties." + target.getUniqueId().toString() + ".bounty");
                                     Main.getEconomy().withdrawPlayer(p, Integer.parseInt(args[1]));
+                                    bountiesdata.set("bounties." + p.getUniqueId().toString() + ".headdropped", false);
                                     bountiesdata.set("bounties." + target.getUniqueId().toString() + ".bounty", (bountystart + Math.round((config.getDouble("TaxPercent")*Integer.parseInt(args[1])))));
                                     bountiesdata.save(bountiesYml);
                                 } catch (IOException e) {
