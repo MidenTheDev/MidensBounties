@@ -48,7 +48,7 @@ public class Main extends JavaPlugin {
             getDataFolder().mkdirs();
             cs.sendMessage(ChatColor.GRAY+"[MidensBounties] "+ChatColor.GREEN + "Making the data folder");
         }
-        new UpdateChecker(this, 88653).getVersion(version -> {
+        new UpdateChecker(this, 96070).getVersion(version -> {
             if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
                 cs.sendMessage(ChatColor.GRAY +"[MidensBounties] "+ChatColor.GREEN + "You're running the latest version!");
             } else {
