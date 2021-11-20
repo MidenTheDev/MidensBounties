@@ -18,8 +18,13 @@ import java.io.IOException;
 
 public class PlayerClickOnHead implements Listener {
 
+    private final Main plugin = Main.getPlugin(Main.class);
+    File messagesYml = new File(plugin.getDataFolder()+"/messages.yml");
+    FileConfiguration messagesconfig = YamlConfiguration.loadConfiguration(messagesYml);
+
     @EventHandler
     public void OnClick(PlayerInteractEvent e) {
+        messagesconfig = YamlConfiguration.loadConfiguration(messagesYml);
         Player p = e.getPlayer();
         Action action = e.getAction();
         final Main plugin = Main.getPlugin(Main.class);
@@ -34,7 +39,8 @@ public class PlayerClickOnHead implements Listener {
                     if(meta.getOwningPlayer().getUniqueId().toString().equals(uuid) && p.getInventory().getItemInMainHand().hasItemMeta()){
                         Main.getEconomy().depositPlayer(p, Integer.parseInt(p.getInventory().getItemInMainHand().getItemMeta().getLore().get(2).substring(2)));
                         p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-                        p.sendMessage(ChatColor.GREEN + "You claimed the bounty!");
+                        p.sendMessage(messagesconfig.getString("BountyClaimed").replace("&", "§"));
+
                     } else {
                         //do nothing
                     }

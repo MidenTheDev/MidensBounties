@@ -24,10 +24,14 @@ public class PlayerKilledHead implements Listener {
     File bountiesYml = new File(plugin.getDataFolder()+"/bounties.yml");
     public FileConfiguration bountiesdata = YamlConfiguration.loadConfiguration(bountiesYml);
     FileConfiguration config = plugin.getConfig();
+    File messagesYml = new File(plugin.getDataFolder()+"/messages.yml");
+    FileConfiguration messagesconfig = YamlConfiguration.loadConfiguration(messagesYml);
+
     @EventHandler
     public void onKill(PlayerDeathEvent e) {
         Player p = e.getEntity();
         bountiesdata = YamlConfiguration.loadConfiguration(bountiesYml);
+        messagesconfig = YamlConfiguration.loadConfiguration(messagesYml);
         bountiesdata.getConfigurationSection("bounties").getKeys(false).forEach(uuid -> {
             if(p.getUniqueId().toString().equals(uuid) && p.getKiller() != null) {
                 Player killer = p.getKiller();
@@ -41,14 +45,14 @@ public class PlayerKilledHead implements Listener {
                         meta.setOwningPlayer(p);
                         meta.setDisplayName(p.getName() + "'s Head");
                         meta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
-                        lore.add(ChatColor.GOLD + "Right-click in your hand to claim the bounty!");
-                        lore.add(ChatColor.GOLD + "Bounty:");
+                        lore.add(messagesconfig.getString("SkullLoreLine1").replace("&", "§"));
+                        lore.add(messagesconfig.getString("SkullLoreLine2").replace("&", "§"));
                         lore.add(ChatColor.GOLD + ""+ bounty);
                         meta.setLore(lore);
                         playerskull.setItemMeta(meta);
                         e.getDrops().add(playerskull);
                         bountiesdata.set("bounties." + p.getUniqueId().toString() + ".headdropped", true);
-                        e.setDeathMessage(p.getDisplayName() + ChatColor.RED + " died with a bounty of $" + bounty);
+                        e.setDeathMessage(p.getDisplayName() + messagesconfig.getString("DeathMessage").replace("&", "§") + bounty);
                         bountiesdata.set("bounties." + p.getUniqueId().toString() + ".bounty", 0);
                         bounty = 0;
                         try {
@@ -57,7 +61,7 @@ public class PlayerKilledHead implements Listener {
                             ex.printStackTrace();
                         }
                     } else {
-                        killer.sendMessage(ChatColor.RED + "This bounty was taken by someone else, but they haven't claimed it!");
+                        killer.sendMessage(messagesconfig.getString("HeadTakenButUnclaimed").replace("&", "§"));
                     }
 
                 } else {

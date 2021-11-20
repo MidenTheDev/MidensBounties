@@ -10,14 +10,11 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 public class Main extends JavaPlugin {
@@ -30,6 +27,7 @@ public class Main extends JavaPlugin {
     private static Economy econ = null;
 
     File bountiesYml = new File(getDataFolder()+"/bounties.yml");
+    File messagesYml = new File(getDataFolder()+"/messages.yml");
 
     public void onEnable(){
         instance = this;
@@ -61,6 +59,11 @@ public class Main extends JavaPlugin {
         registerConfig();
         if(!bountiesYml.exists()){
             this.saveResource("bounties.yml", false);
+        }else{
+            // do nothing
+        }
+        if(!messagesYml.exists()){
+            this.saveResource("messages.yml", false);
         }else{
             // do nothing
         }

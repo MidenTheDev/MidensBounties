@@ -19,16 +19,18 @@ public class SetBounty implements CommandExecutor {
     File bountiesYml = new File(plugin.getDataFolder()+"/bounties.yml");
     FileConfiguration bountiesdata = YamlConfiguration.loadConfiguration(bountiesYml);
     FileConfiguration config = plugin.getConfig();
-
+    File messagesYml = new File(plugin.getDataFolder()+"/messages.yml");
+    FileConfiguration messagesconfig = YamlConfiguration.loadConfiguration(messagesYml);
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
         bountiesdata = YamlConfiguration.loadConfiguration(bountiesYml);
+        messagesconfig = YamlConfiguration.loadConfiguration(messagesYml);
         if (cmd.getName().equals("setbounty")) {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
                 if (args.length == 0) {
-                    sender.sendMessage(ChatColor.RED + "You must specify a player!");
+                    sender.sendMessage(messagesconfig.getString("MustSpecifyAPlayer").replace("&", "§"));
                 } else {
                     if(Bukkit.getOfflinePlayer(args[0]).equals((OfflinePlayer) sender)){}else{if (Bukkit.getOfflinePlayer(args[0]).hasPlayedBefore()) {
                         if (isInt(args[1]) && args.length >= 2) {
@@ -43,24 +45,24 @@ public class SetBounty implements CommandExecutor {
                                     e.printStackTrace();
                                 }
                                 if(config.getInt("TaxPercent")!=1) {
-                                    sender.sendMessage(ChatColor.GREEN + "Your bounty has been placed. "+Math.round(((1-config.getDouble("TaxPercent"))*100))+"% has been taken as a tax.");
+                                    sender.sendMessage(messagesconfig.getString("BountyPlaced").replace("&", "§")+Math.round(((1-config.getDouble("TaxPercent"))*100))+messagesconfig.getString("TaxPercentTaken").replace("&", "§"));
                                 } else {
-                                    sender.sendMessage(ChatColor.GREEN + "Your bounty has been placed.");
+                                    sender.sendMessage(messagesconfig.getString("BountyPlaced").replace("&", "§"));
                                 }
 
                             } else {
-                                sender.sendMessage(ChatColor.RED + "You don't have enough money!");
+                                sender.sendMessage(messagesconfig.getString("NotEnoughMoney").replace("&", "§"));
                             }
                         } else {
-                            sender.sendMessage(ChatColor.RED + "You must specify an amount!");
+                            sender.sendMessage(messagesconfig.getString("MustSpecifyAmount").replace("&", "§"));
                         }
 
                     } else {
-                        sender.sendMessage(ChatColor.RED + "Make sure the player's name is spelled properly!");
+                        sender.sendMessage(messagesconfig.getString("PlayerNotFound").replace("&", "§"));
                     }}
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "You must be a player to use this command!");
+                sender.sendMessage(messagesconfig.getString("MustBeAPlayer").replace("&", "§"));
             }
         }
 

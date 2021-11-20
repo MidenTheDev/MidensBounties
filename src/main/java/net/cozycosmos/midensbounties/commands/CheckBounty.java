@@ -1,7 +1,9 @@
 package net.cozycosmos.midensbounties.commands;
 
 import net.cozycosmos.midensbounties.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,32 +20,60 @@ public class CheckBounty implements CommandExecutor {
     File bountiesYml = new File(plugin.getDataFolder()+"/bounties.yml");
     FileConfiguration bountiesdata = YamlConfiguration.loadConfiguration(bountiesYml);
 
+    File messagesYml = new File(plugin.getDataFolder()+"/messages.yml");
+    FileConfiguration messagesconfig = YamlConfiguration.loadConfiguration(messagesYml);
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
         bountiesdata = YamlConfiguration.loadConfiguration(bountiesYml);
+        messagesconfig = YamlConfiguration.loadConfiguration(messagesYml);
         if (cmd.getName().equals("bounty")) {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
-                bountiesdata.getConfigurationSection("bounties").getKeys(false).forEach(uuid -> {
-                    if (p.getUniqueId().toString().equals(uuid)) {
-                        bounty = bountiesdata.getInt("bounties." + uuid + ".bounty");
-                        if (bounty >= 1) {
-                            p.sendMessage(ChatColor.GOLD + "Your current bounty is: $" + bounty);
-                        } else {
-                            p.sendMessage(ChatColor.GOLD + "You don't currently have a bounty!");
-                        }
+                if (args.length >= 1) {
+                    OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
+                    bountiesdata.getConfigurationSection("bounties").getKeys(false).forEach(uuid -> {
+                        if (target.getUniqueId().toString().equals(uuid)) {
+                            bounty = bountiesdata.getInt("bounties." + uuid + ".bounty");
+                            if (bounty >= 1) {
+                                p.sendMessage(messagesconfig.getString("BountyOther").replace("&", "§") + bounty);
+                            } else {
+                                p.sendMessage(messagesconfig.getString("NoBountyOther").replace("&", "§"));
+                            }
 
-                    } else {
-                        check++;
+                        } else {
+                            check++;
+                        }
+                    });
+                    if (bountiesdata.getConfigurationSection("bounties").getKeys(false).size() == check){
+                        p.sendMessage(messagesconfig.getString("NoBountyOther").replace("&", "§"));
                     }
-                });
-                if (bountiesdata.getConfigurationSection("bounties").getKeys(false).size() == check){
-                    p.sendMessage(ChatColor.GOLD + "You don't currently have a bounty!");
+                } else {
+                    bountiesdata.getConfigurationSection("bounties").getKeys(false).forEach(uuid -> {
+                        if (p.getUniqueId().toString().equals(uuid)) {
+                            bounty = bountiesdata.getInt("bounties." + uuid + ".bounty");
+                            if (bounty >= 1) {
+                                p.sendMessage(messagesconfig.getString("BountySelf").replace("&", "§") + bounty);
+                            } else {
+                                p.sendMessage(messagesconfig.getString("NoBountySelf").replace("&", "§"));
+                            }
+
+                        } else {
+                            check++;
+                        }
+                    });
+                    if (bountiesdata.getConfigurationSection("bounties").getKeys(false).size() == check){
+                        p.sendMessage(messagesconfig.getString("NoBountySelf").replace("&", "§"));
+                    }
                 }
+
             } else {
-                sender.sendMessage(ChatColor.RED + "You must be a player to use this command!");
+                sender.sendMessage(messagesconfig.getString("MustbeAPlayer").replace("&", "§"));
             }
         }
         return true;
     }
+
+
+
 }

@@ -17,10 +17,14 @@ public class PlayerKilledStandard implements Listener {
     private final Main plugin = Main.getPlugin(Main.class);
     File bountiesYml = new File(plugin.getDataFolder()+"/bounties.yml");
     public FileConfiguration bountiesdata = YamlConfiguration.loadConfiguration(bountiesYml);
+    File messagesYml = new File(plugin.getDataFolder()+"/messages.yml");
+    FileConfiguration messagesconfig = YamlConfiguration.loadConfiguration(messagesYml);
+
     @EventHandler
     public void onKill(PlayerDeathEvent e) {
         Player p = e.getEntity();
         bountiesdata = YamlConfiguration.loadConfiguration(bountiesYml);
+        messagesconfig = YamlConfiguration.loadConfiguration(messagesYml);
         bountiesdata.getConfigurationSection("bounties").getKeys(false).forEach(uuid -> {
             if(p.getUniqueId().toString().equals(uuid) && p.getKiller() != null) {
                 Player killer = p.getKiller();
@@ -31,7 +35,7 @@ public class PlayerKilledStandard implements Listener {
                         bountiesdata.save(bountiesYml);
                         Main.getEconomy().depositPlayer(killer, bounty);
                         e.setDeathMessage(p.getDisplayName() + ChatColor.RED + " died with a bounty of $" + bounty);
-                        killer.sendMessage(ChatColor.GREEN + "You received $" + bounty);
+                        killer.sendMessage(messagesconfig.getString("BountyAmountRecieved").replace("&", "§") + bounty);
                         bounty = 0;
                     } catch (IOException ex) {
                         ex.printStackTrace();
