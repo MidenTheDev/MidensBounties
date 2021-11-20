@@ -42,12 +42,20 @@ public class PlayerKilledHead implements Listener {
                         meta.setDisplayName(p.getName() + "'s Head");
                         meta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
                         lore.add(ChatColor.GOLD + "Right-click in your hand to claim the bounty!");
-                        lore.add(ChatColor.GOLD + "Bounty: $" + bounty);
+                        lore.add(ChatColor.GOLD + "Bounty:");
+                        lore.add(ChatColor.GOLD + ""+ bounty);
                         meta.setLore(lore);
                         playerskull.setItemMeta(meta);
-                        bountiesdata.set("bounties." + p.getUniqueId().toString() + ".headdropped", true);
                         e.getDrops().add(playerskull);
+                        bountiesdata.set("bounties." + p.getUniqueId().toString() + ".headdropped", true);
                         e.setDeathMessage(p.getDisplayName() + ChatColor.RED + " died with a bounty of $" + bounty);
+                        bountiesdata.set("bounties." + p.getUniqueId().toString() + ".bounty", 0);
+                        bounty = 0;
+                        try {
+                            bountiesdata.save(bountiesYml);
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
                     } else {
                         killer.sendMessage(ChatColor.RED + "This bounty was taken by someone else, but they haven't claimed it!");
                     }

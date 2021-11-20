@@ -31,6 +31,8 @@ public class PlayerKilledStandard implements Listener {
                         bountiesdata.save(bountiesYml);
                         Main.getEconomy().depositPlayer(killer, bounty);
                         e.setDeathMessage(p.getDisplayName() + ChatColor.RED + " died with a bounty of $" + bounty);
+                        killer.sendMessage(ChatColor.GREEN + "You received $" + bounty);
+                        bounty = 0;
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }

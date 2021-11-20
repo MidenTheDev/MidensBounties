@@ -30,7 +30,6 @@ public class Main extends JavaPlugin {
     private static Economy econ = null;
 
     File bountiesYml = new File(getDataFolder()+"/bounties.yml");
-    FileConfiguration bountiesdata = YamlConfiguration.loadConfiguration(bountiesYml);
 
     public void onEnable(){
         instance = this;
@@ -81,6 +80,7 @@ public class Main extends JavaPlugin {
         if(getConfig().getBoolean("Head-Drops")){
             pm.registerEvents(new PlayerKilledHead(), this);
             pm.registerEvents(new PlayerClickOnHead(), this);
+
         } else {
             pm.registerEvents(new PlayerKilledStandard(), this);
         }
@@ -98,16 +98,7 @@ public class Main extends JavaPlugin {
         this.saveDefaultConfig();
     }
 
-    public void saveCustomYml(FileConfiguration ymlConfig, File ymlFile) {
 
-        try {
-
-            ymlConfig.save(ymlFile);
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {

@@ -30,14 +30,14 @@ public class SetBounty implements CommandExecutor {
                 if (args.length == 0) {
                     sender.sendMessage(ChatColor.RED + "You must specify a player!");
                 } else {
-                    if (Bukkit.getOfflinePlayer(args[0]).hasPlayedBefore()) {
-                        if (isInt(args[1])) {
+                    if(Bukkit.getOfflinePlayer(args[0]).equals((OfflinePlayer) sender)){}else{if (Bukkit.getOfflinePlayer(args[0]).hasPlayedBefore()) {
+                        if (isInt(args[1]) && args.length >= 2) {
                             if (Main.getEconomy().getBalance(p) >= Integer.parseInt(args[1])) {
                                 try {
                                     double bountystart = bountiesdata.getInt("bounties." + target.getUniqueId().toString() + ".bounty");
                                     Main.getEconomy().withdrawPlayer(p, Integer.parseInt(args[1]));
-                                    bountiesdata.set("bounties." + p.getUniqueId().toString() + ".headdropped", false);
                                     bountiesdata.set("bounties." + target.getUniqueId().toString() + ".bounty", (bountystart + Math.round((config.getDouble("TaxPercent")*Integer.parseInt(args[1])))));
+                                    bountiesdata.set("bounties." + target.getUniqueId().toString() + ".headdropped", false);
                                     bountiesdata.save(bountiesYml);
                                 } catch (IOException e) {
                                     e.printStackTrace();
@@ -57,7 +57,7 @@ public class SetBounty implements CommandExecutor {
 
                     } else {
                         sender.sendMessage(ChatColor.RED + "Make sure the player's name is spelled properly!");
-                    }
+                    }}
                 }
             } else {
                 sender.sendMessage(ChatColor.RED + "You must be a player to use this command!");
