@@ -40,6 +40,7 @@ public class SetBounty implements CommandExecutor {
                                     Main.getEconomy().withdrawPlayer(p, Integer.parseInt(args[1]));
                                     bountiesdata.set("bounties." + target.getUniqueId().toString() + ".bounty", (bountystart + Math.round((config.getDouble("TaxPercent")*Integer.parseInt(args[1])))));
                                     bountiesdata.set("bounties." + target.getUniqueId().toString() + ".headdropped", false);
+                                    bountiesdata.set("bounties." + target.getUniqueId().toString() + ".username", target.getName());
                                     bountiesdata.save(bountiesYml);
                                 } catch (IOException e) {
                                     e.printStackTrace();

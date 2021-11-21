@@ -1,4 +1,5 @@
 package net.cozycosmos.midensbounties;
+import net.cozycosmos.midensbounties.commands.BountyTracker;
 import net.cozycosmos.midensbounties.commands.CheckBounty;
 import net.cozycosmos.midensbounties.commands.SetBounty;
 import net.cozycosmos.midensbounties.events.PlayerClickOnHead;
@@ -6,6 +7,7 @@ import net.cozycosmos.midensbounties.events.PlayerKilledHead;
 import net.cozycosmos.midensbounties.events.PlayerKilledStandard;
 import net.cozycosmos.midensbounties.extras.Metrics;
 import net.cozycosmos.midensbounties.extras.UpdateChecker;
+import net.cozycosmos.midensbounties.guis.Bounties;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -80,6 +82,7 @@ public class Main extends JavaPlugin {
     }
 
     public void registerEvents() {
+        pm.registerEvents(new Bounties(), this);
         if(getConfig().getBoolean("Head-Drops")){
             pm.registerEvents(new PlayerKilledHead(), this);
             pm.registerEvents(new PlayerClickOnHead(), this);
@@ -94,6 +97,7 @@ public class Main extends JavaPlugin {
     public void registerCommands(){
         getCommand("setbounty").setExecutor(new SetBounty());
         getCommand("bounty").setExecutor(new CheckBounty());
+        getCommand("bounties").setExecutor(new BountyTracker());
     }
 
     public void registerConfig() {

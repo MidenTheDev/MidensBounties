@@ -25,6 +25,7 @@ public class PlayerClickOnHead implements Listener {
     @EventHandler
     public void OnClick(PlayerInteractEvent e) {
         messagesconfig = YamlConfiguration.loadConfiguration(messagesYml);
+
         Player p = e.getPlayer();
         Action action = e.getAction();
         final Main plugin = Main.getPlugin(Main.class);

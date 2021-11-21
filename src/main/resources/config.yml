@@ -5,3 +5,9 @@ TaxPercent: 0.92
 Head-Drops: false
 # Set the above to true if you want player heads to drop for players with bounties.
 # Players will right-click this head to claim the bounty!
+GiveCompass: false
+# When set to true, when a head is clicked in the open bounties GUI, the player
+# will receive a compass.
+TrackCompass: true
+# When set to true, when a head is clicked in the open bounties GUI. compasses
+# Used by this player will track the last known location of the player whose head they clicked
