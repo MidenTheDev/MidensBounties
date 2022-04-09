@@ -1,7 +1,7 @@
 name: MidensBounties
 main: net.cozycosmos.midensbounties.Main
 author: Miden
-version: 1.1
+version: 1.1.1
 depend: [Vault]
 
 commands:

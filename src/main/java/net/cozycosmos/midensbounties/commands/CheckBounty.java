@@ -15,7 +15,7 @@ import java.io.File;
 
 public class CheckBounty implements CommandExecutor {
     private int bounty;
-    private int check;
+    private boolean bountyfound = false;
     private final Main plugin = Main.getPlugin(Main.class);
     File bountiesYml = new File(plugin.getDataFolder()+"/bounties.yml");
     FileConfiguration bountiesdata = YamlConfiguration.loadConfiguration(bountiesYml);
@@ -31,9 +31,12 @@ public class CheckBounty implements CommandExecutor {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 if (args.length >= 1) {
+
                     OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
+                    bountyfound = false;
                     bountiesdata.getConfigurationSection("bounties").getKeys(false).forEach(uuid -> {
                         if (target.getUniqueId().toString().equals(uuid)) {
+                            bountyfound = true;
                             bounty = bountiesdata.getInt("bounties." + uuid + ".bounty");
                             if (bounty >= 1) {
                                 p.sendMessage(messagesconfig.getString("BountyOther").replace("&", "§") + bounty);
@@ -42,16 +45,18 @@ public class CheckBounty implements CommandExecutor {
                             }
 
                         } else {
-                            check++;
+
                         }
                     });
-                    if (bountiesdata.getConfigurationSection("bounties").getKeys(false).size() == check){
+                    if (bountyfound == false){
                         p.sendMessage(messagesconfig.getString("NoBountyOther").replace("&", "§"));
                     }
                 } else {
+                    bountyfound = false;
                     bountiesdata.getConfigurationSection("bounties").getKeys(false).forEach(uuid -> {
                         if (p.getUniqueId().toString().equals(uuid)) {
                             bounty = bountiesdata.getInt("bounties." + uuid + ".bounty");
+                            bountyfound = true;
                             if (bounty >= 1) {
                                 p.sendMessage(messagesconfig.getString("BountySelf").replace("&", "§") + bounty);
                             } else {
@@ -59,16 +64,16 @@ public class CheckBounty implements CommandExecutor {
                             }
 
                         } else {
-                            check++;
+
                         }
                     });
-                    if (bountiesdata.getConfigurationSection("bounties").getKeys(false).size() == check){
+                    if (bountyfound == false){
                         p.sendMessage(messagesconfig.getString("NoBountySelf").replace("&", "§"));
                     }
                 }
 
             } else {
-                sender.sendMessage(messagesconfig.getString("MustbeAPlayer").replace("&", "§"));
+                sender.sendMessage(messagesconfig.getString("MustBeAPlayer").replace("&", "§"));
             }
         }
         return true;
