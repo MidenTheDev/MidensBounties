@@ -1,7 +1,6 @@
 package net.cozycosmos.midensbounties.events;
 
-import net.cozycosmos.midensbounties.Main;
-import org.bukkit.ChatColor;
+import net.cozycosmos.midensbounties.MidensBounties;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,11 +13,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.io.File;
-import java.io.IOException;
 
 public class PlayerClickOnHead implements Listener {
 
-    private final Main plugin = Main.getPlugin(Main.class);
+    private final MidensBounties plugin = MidensBounties.getPlugin(MidensBounties.class);
     File messagesYml = new File(plugin.getDataFolder()+"/messages.yml");
     FileConfiguration messagesconfig = YamlConfiguration.loadConfiguration(messagesYml);
 
@@ -27,7 +25,7 @@ public class PlayerClickOnHead implements Listener {
         messagesconfig = YamlConfiguration.loadConfiguration(messagesYml);
         Player p = e.getPlayer();
         Action action = e.getAction();
-        final Main plugin = Main.getPlugin(Main.class);
+        final MidensBounties plugin = MidensBounties.getPlugin(MidensBounties.class);
         File bountiesYml = new File(plugin.getDataFolder()+"/bounties.yml");
         FileConfiguration bountiesdata = YamlConfiguration.loadConfiguration(bountiesYml);
 
@@ -37,7 +35,7 @@ public class PlayerClickOnHead implements Listener {
                 SkullMeta meta = (SkullMeta) e.getItem().getItemMeta();
                 bountiesdata.getConfigurationSection("bounties").getKeys(false).forEach(uuid -> {
                     if(meta.getOwningPlayer().getUniqueId().toString().equals(uuid) && p.getInventory().getItemInMainHand().hasItemMeta()){
-                        Main.getEconomy().depositPlayer(p, Integer.parseInt(p.getInventory().getItemInMainHand().getItemMeta().getLore().get(2).substring(2)));
+                        MidensBounties.getEconomy().depositPlayer(p, Integer.parseInt(p.getInventory().getItemInMainHand().getItemMeta().getLore().get(2).substring(2)));
                         p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
                         p.sendMessage(messagesconfig.getString("BountyClaimed").replace("&", "§"));
 

@@ -1,8 +1,7 @@
 package net.cozycosmos.midensbounties.commands;
 
-import net.cozycosmos.midensbounties.Main;
+import net.cozycosmos.midensbounties.MidensBounties;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,7 +15,7 @@ import java.io.File;
 public class CheckBounty implements CommandExecutor {
     private int bounty;
     private boolean bountyfound = false;
-    private final Main plugin = Main.getPlugin(Main.class);
+    private final MidensBounties plugin = MidensBounties.getPlugin(MidensBounties.class);
     File bountiesYml = new File(plugin.getDataFolder()+"/bounties.yml");
     FileConfiguration bountiesdata = YamlConfiguration.loadConfiguration(bountiesYml);
 
@@ -48,7 +47,7 @@ public class CheckBounty implements CommandExecutor {
 
                         }
                     });
-                    if (bountyfound == false){
+                    if (!bountyfound){
                         p.sendMessage(messagesconfig.getString("NoBountyOther").replace("&", "§"));
                     }
                 } else {

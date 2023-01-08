@@ -1,6 +1,6 @@
 package net.cozycosmos.midensbounties.events;
 
-import net.cozycosmos.midensbounties.Main;
+import net.cozycosmos.midensbounties.MidensBounties;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class PlayerKilledStandard implements Listener {
     private int bounty;
-    private final Main plugin = Main.getPlugin(Main.class);
+    private final MidensBounties plugin = MidensBounties.getPlugin(MidensBounties.class);
     File bountiesYml = new File(plugin.getDataFolder()+"/bounties.yml");
     public FileConfiguration bountiesdata = YamlConfiguration.loadConfiguration(bountiesYml);
     File messagesYml = new File(plugin.getDataFolder()+"/messages.yml");
@@ -33,7 +33,7 @@ public class PlayerKilledStandard implements Listener {
                     try {
                         bountiesdata.set("bounties." + p.getUniqueId().toString() + ".bounty", 0);
                         bountiesdata.save(bountiesYml);
-                        Main.getEconomy().depositPlayer(killer, bounty);
+                        MidensBounties.getEconomy().depositPlayer(killer, bounty);
                         e.setDeathMessage(p.getDisplayName() + ChatColor.RED + " died with a bounty of $" + bounty);
                         killer.sendMessage(messagesconfig.getString("BountyAmountRecieved").replace("&", "§") + bounty);
                         bounty = 0;

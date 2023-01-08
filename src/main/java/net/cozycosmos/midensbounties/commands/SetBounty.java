@@ -1,8 +1,7 @@
 package net.cozycosmos.midensbounties.commands;
 
-import net.cozycosmos.midensbounties.Main;
+import net.cozycosmos.midensbounties.MidensBounties;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,7 +14,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class SetBounty implements CommandExecutor {
-    private final Main plugin = Main.getPlugin(Main.class);
+    private final MidensBounties plugin = MidensBounties.getPlugin(MidensBounties.class);
     File bountiesYml = new File(plugin.getDataFolder()+"/bounties.yml");
     FileConfiguration bountiesdata = YamlConfiguration.loadConfiguration(bountiesYml);
     FileConfiguration config = plugin.getConfig();
@@ -34,10 +33,10 @@ public class SetBounty implements CommandExecutor {
                 } else {
                     if(Bukkit.getOfflinePlayer(args[0]).equals((OfflinePlayer) sender)){}else{if (Bukkit.getOfflinePlayer(args[0]).hasPlayedBefore()) {
                         if (isInt(args[1]) && args.length >= 2) {
-                            if (Main.getEconomy().getBalance(p) >= Integer.parseInt(args[1])) {
+                            if (MidensBounties.getEconomy().getBalance(p) >= Integer.parseInt(args[1])) {
                                 try {
                                     double bountystart = bountiesdata.getInt("bounties." + target.getUniqueId().toString() + ".bounty");
-                                    Main.getEconomy().withdrawPlayer(p, Integer.parseInt(args[1]));
+                                    MidensBounties.getEconomy().withdrawPlayer(p, Integer.parseInt(args[1]));
                                     bountiesdata.set("bounties." + target.getUniqueId().toString() + ".bounty", (bountystart + Math.round((config.getDouble("TaxPercent")*Integer.parseInt(args[1])))));
                                     bountiesdata.set("bounties." + target.getUniqueId().toString() + ".headdropped", false);
                                     bountiesdata.save(bountiesYml);
