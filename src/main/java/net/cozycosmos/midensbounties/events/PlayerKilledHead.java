@@ -1,6 +1,6 @@
 package net.cozycosmos.midensbounties.events;
 
-import net.cozycosmos.midensbounties.Main;
+import net.cozycosmos.midensbounties.MidensBounties;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class PlayerKilledHead implements Listener {
     private int bounty;
-    private final Main plugin = Main.getPlugin(Main.class);
+    private final MidensBounties plugin = MidensBounties.getPlugin(MidensBounties.class);
     File bountiesYml = new File(plugin.getDataFolder()+"/bounties.yml");
     public FileConfiguration bountiesdata = YamlConfiguration.loadConfiguration(bountiesYml);
     FileConfiguration config = plugin.getConfig();
